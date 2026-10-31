@@ -14,7 +14,8 @@ window.PAYLOAD_TILES = [
     {"title": "PKG-Manager", "description": "Browse and install PKGs from USB, disc, or SMB shares directly on your PS5. Version v1.4.1", "name": "PKG-Manager_v1.4.1.elf", "info": "PKG-Manager_v1.4.1.elf - itsPLK", "key": "pkg-manager"},
     {"title": "pldmgr", "description": "Modern web dashboard to manage, import, and automatically load payloads on your PS5. Version v0.5.2", "name": "pldmgr_v0.5.2.elf", "info": "pldmgr_v0.5.2.elf - itsPLK", "key": "pldmgr"},
     {"title": "ps5-app-dumper", "description": "Dumps PS5 application files from pfsmnt to a connected USB storage device. Version v2.00", "name": "ps5-app-dumper_v2.00.elf", "info": "ps5-app-dumper_v2.00.elf - EchoStretch", "key": "ps5-app-dumper"},
-    {"title": "ShadowMountPlus", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta2", "name": "ShadowMountPlus_1.7beta2.elf", "info": "ShadowMountPlus_1.7beta2.elf - drakmor", "key": "shadowmountplus"},
+    {"title": "ShadowMountPlus1.7beta2", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta2", "name": "ShadowMountPlus_1.7beta2.elf", "info": "ShadowMountPlus_1.7beta2.elf - drakmor", "key": "shadowmountplus"},
+    {"title": "ShadowMountPlus1.7beta11", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta11", "name": "shadowmountplus.elf", "info": "ShadowMountPlus_1.7beta11.elf - drakmor", "key": "shadowmountplus-1.7beta11"},
     {"title": "Orbit-Store", "description": "A modern, no-BS download manager for PS5. Version: 1.8.1 (Beta)", "name": "orbit_store.elf", "info": "orbit_store.elf - saawant12", "key": "orbit_store"}
 ];
 window.PAYLOAD_ART = { dir: "ui/", pfx: "btn-", on: true };
