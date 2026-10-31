@@ -8,7 +8,7 @@ site: `node api/serve.js 8080`.
 
 | Port | Program | Job |
 |---|---|---|
-| udp 53 | `dns-server/dns.js` | answers every A query with this machine's LAN IP; NXDOMAINs PlayStation/Sony domains (update + PSN blocker) except `manuals.playstation.net` |
+| udp 53 | `dns-server/dns.js` | allowlisted hosts (`manuals.playstation.net`) resolve to this machine's LAN IP, PlayStation/Sony domains NXDOMAIN (update + PSN blocker), everything else forwarded to a public upstream resolver (default 8.8.8.8) so the console can reach the real internet |
 | tcp 443 (+80) | `dns-server/https.js` | doorman: the User's Guide insists on `https://manuals.playstation.net` port 443. Ends up here, shows the self-signed cert warning (accept once), then gets bounced to `http://<ip>:8080/` where the real exploit page lives |
 | tcp 8080 | `api/serve.js` | the actual site (Jailbreak / Payloads buttons) and `/api/payload` delivery |
 
@@ -61,6 +61,8 @@ time).
 ```text
 dns.js    [--ip <addr>]        answer with this address  (default: auto LAN IP)
           [--port <n>]         UDP port                  (default: 53)
+          [--upstream <addr>]  resolver non-Sony queries are forwarded to
+                               (default: 8.8.8.8)
           [--no-block-psn]     answer PlayStation/Sony names with the IP too
 https.js  [--ip <addr>]        address in redirects      (default: auto LAN IP)
           [--port <n>]         HTTPS port                (default: 443)

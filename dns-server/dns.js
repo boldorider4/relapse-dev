@@ -1,16 +1,19 @@
 #!/usr/bin/env node
-/* Minimal fake DNS server for PS5 exploit hosting. Node stdlib only.
+/* Fake DNS server for PS5 exploit hosting. Node stdlib only.
  *
  *   sudo node dns.js [options]
  *
- * A queries are answered with this machine's LAN IP (where api/serve.js
- * runs). PlayStation/Sony domains are NXDOMAINed to stop updates and PSN
- * traffic, except manuals.playstation.net - the User's Guide host the
- * console must reach to load the exploit page.
+ * The allowlisted exploit-host domains (manuals.playstation.net) are answered
+ * with this machine's LAN IP (where api/serve.js and the 443 doorman run).
+ * PlayStation/Sony domains are NXDOMAINed to stop updates and PSN traffic.
+ * Everything else is forwarded verbatim to an upstream resolver so the console
+ * can reach the real internet (catalogue art, provider pages) while the
+ * Sony blocklist stays intact.
  *
  * Options:
  *   --ip <addr>        answer with this address  (default: auto-detect LAN IP)
  *   --port <n>         UDP port to bind          (default: 53, needs root)
+ *   --upstream <addr>  resolver to forward to    (default: 8.8.8.8)
  *   --no-block-psn     answer PlayStation/Sony domains with the IP instead of NXDOMAIN
  *   --help
  */
@@ -29,15 +32,16 @@ function matchesPattern(name, pattern) {
 }
 
 function usage() {
-    console.log("usage: node dns.js [--ip <addr>] [--port <n>] [--no-block-psn] [--help]");
+    console.log("usage: node dns.js [--ip <addr>] [--port <n>] [--upstream <addr>] [--no-block-psn] [--help]");
 }
 
 const args = process.argv.slice(2);
-let PORT = 53, FIX_IP = null, BLOCK = true;
+let PORT = 53, FIX_IP = null, BLOCK = true, UPSTREAM = "8.8.8.8";
 for (let i = 0; i < args.length; i++) {
     if (args[i] === "--help") { usage(); process.exit(0); }
     else if (args[i] === "--ip") FIX_IP = args[++i];
     else if (args[i] === "--port") PORT = parseInt(args[++i], 10);
+    else if (args[i] === "--upstream") UPSTREAM = args[++i];
     else if (args[i] === "--no-block-psn") BLOCK = false;
     else { console.error("unknown argument: " + args[i]); usage(); process.exit(1); }
 }
@@ -118,6 +122,63 @@ function aRecord(name) {
     return Buffer.concat([rrPrefix(name, 1, 4, 60), Buffer.from(ip)]);
 }
 
+const UP_TIMEOUT = 3000;
+
+function skipName(buf, off) {
+    for (;;) {
+        if (off >= buf.length) return null;
+        const len = buf[off++];
+        if (len === 0) return off;
+        if ((len & 0xC0) === 0xC0) return off + 1;
+        off += len;
+    }
+}
+
+function firstAnswerIP(buf) {
+    try {
+        const qd = buf.readUInt16BE(4), an = buf.readUInt16BE(6);
+        let off = 12;
+        for (let i = 0; i < qd; i++) {
+            off = skipName(buf, off);
+            if (off === null || off + 4 > buf.length) return null;
+            off += 4;
+        }
+        for (let i = 0; i < an; i++) {
+            off = skipName(buf, off);
+            if (off === null || off + 10 > buf.length) return null;
+            const type = buf.readUInt16BE(off), rdlength = buf.readUInt16BE(off + 8);
+            off += 10;
+            if (type === 1 && rdlength === 4 && off + 4 <= buf.length)
+                return Array.from(buf.subarray(off, off + 4)).join(".");
+            off += rdlength;
+        }
+    } catch (e) {}
+    return null;
+}
+
+function forwardQuery(q, req, rinfo) {
+    const servfail = (verdict) => {
+        finish(Buffer.concat([headerFor(q, 2, 0, 0), req.subarray(12, q.end)]), verdict);
+    };
+    const finish = (out, verdict) => {
+        if (up.done) return;
+        up.done = true;
+        clearTimeout(up.timer);
+        try { up.close(); } catch (e) {}
+        sock.send(out, rinfo.port, rinfo.address);
+        console.log(`[dns] ${rinfo.address} ${q.questions[0].name} type=${q.questions[0].type} -> ${verdict}`);
+    };
+    const up = dgram.createSocket("udp4");
+    up.done = false;
+    up.timer = setTimeout(() => servfail(`TIMEOUT(${UPSTREAM})`), UP_TIMEOUT);
+    up.on("message", (res) => {
+        const ip = firstAnswerIP(res);
+        finish(res, ip ? `${ip} (forwarded via ${UPSTREAM})` : `forwarded via ${UPSTREAM}, no A record`);
+    });
+    up.on("error", () => servfail(`ERROR(${UPSTREAM})`));
+    up.send(req, 53, UPSTREAM, (err) => { if (err) servfail(`ERROR(${UPSTREAM})`); });
+}
+
 function soaRecord(name) {
     const fields = Buffer.alloc(20);
     fields.writeUInt32BE(1, 0);
@@ -138,18 +199,21 @@ sock.on("message", (msg, rinfo) => {
     const q = parseQuery(msg);
     if (!q) return;
     const first = q.questions[0];
-    const blocked = BLOCK && q.questions.some(qq =>
-        !ALLOWED_HOSTS.has(qq.name) && BLOCK_PATTERNS.some(p => matchesPattern(qq.name, p)));
+    const local = first.name in ALLOWED_HOSTS ? true : ALLOWED_HOSTS.has(first.name)
+        || (!BLOCK && BLOCK_PATTERNS.some(p => matchesPattern(first.name, p)));
+    const blocked = BLOCK && !local && BLOCK_PATTERNS.some(p => matchesPattern(first.name, p));
     let out, verdict;
     if (blocked) {
         out = Buffer.concat([headerFor(q, 3, 0, 1), msg.subarray(12, q.end), soaRecord(first.name)]);
         verdict = "NXDOMAIN";
-    } else if (first.type === 1) {
+    } else if (local && first.type === 1) {
         out = Buffer.concat([headerFor(q, 0, 1, 0), msg.subarray(12, q.end), aRecord(first.name)]);
         verdict = IP;
-    } else {
+    } else if (local) {
         out = Buffer.concat([headerFor(q, 0, 0, 0), msg.subarray(12, q.end)]);
         verdict = "NODATA";
+    } else {
+        return forwardQuery(q, msg, rinfo);
     }
     sock.send(out, rinfo.port, rinfo.address);
     console.log(`[dns] ${rinfo.address} ${first.name} type=${first.type} -> ${verdict}`);
@@ -162,7 +226,7 @@ sock.on("error", (e) => {
 });
 
 sock.bind(PORT, () => {
-    console.log(`[dns] udp/${PORT} answering A with ${IP} (blocklist ${BLOCK ? "on, manuals.playstation.net exempt" : "off"})`);
+    console.log(`[dns] udp/${PORT} allow ${ALLOWED_HOSTS.size} host(s) -> ${IP}, sony blocked ${BLOCK ? "on" : "off"}, forwarding to ${UPSTREAM}`);
 });
 
 process.on("SIGINT", () => process.exit(0));
