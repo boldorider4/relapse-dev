@@ -20,6 +20,8 @@
 "use strict";
 const dgram = require("dgram"), os = require("os");
 
+// const WHITELIST_HOSTS = ["ecode.np.cs.playstation.net", "smetrics.aem.playstation.com", "www.playstation.com"];
+const WHITELIST_HOSTS = [""];
 const BLOCK_PATTERNS = ["playstation", "sonyentertainmentnetwork", "sony.com"];
 const ALLOWED_HOSTS = new Set(["manuals.playstation.net", "manuals.playstation.sony.com"]);
 
@@ -194,11 +196,29 @@ function soaRecord(name) {
     ]);
 }
 
+const WHITELIST_SET = new Set(WHITELIST_HOSTS.map(entry => {
+    try {
+        return entry.includes("://") ? new URL(entry).hostname.toLowerCase() : entry.toLowerCase();
+    } catch {
+        return entry.toLowerCase();
+    }
+}));
+
 const sock = dgram.createSocket({ type: "udp4", reuseAddr: true });
 sock.on("message", (msg, rinfo) => {
     const q = parseQuery(msg);
     if (!q) return;
     const first = q.questions[0];
+
+    // Check if the query matches any whitelisted domain or subdomain
+    const whitelisted = Array.from(WHITELIST_SET).some(domain =>
+        first.name === domain || first.name.endsWith("." + domain)
+    );
+
+//    if (whitelisted) {
+//        return forwardQuery(q, msg, rinfo);
+//    }
+
     const local = first.name in ALLOWED_HOSTS ? true : ALLOWED_HOSTS.has(first.name)
         || (!BLOCK && BLOCK_PATTERNS.some(p => matchesPattern(first.name, p)));
     const blocked = BLOCK && !local && BLOCK_PATTERNS.some(p => matchesPattern(first.name, p));
