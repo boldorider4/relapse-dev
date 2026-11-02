@@ -7,6 +7,8 @@ window.PAYLOAD_TILES = [
     {"title": "ps5debug-NG", "description": "PS5 debugger payload with a userland TCP wire-protocol server. Version 1.3.2", "name": "ps5debug-NG_1.3.2.elf", "info": "ps5debug-NG_1.3.2.elf - Pharaoh2k", "key": "ps5debug-ng"},
     {"title": "zftpd", "description": "Zero-copy FTP/HTTP server. Version v1.6.0", "name": "zftpd_v1.6.0.elf", "info": "zftpd_v1.6.0.elf - seregonwar", "key": "zftpd"},
     {"title": "CheatRunner", "description": "Web-based game cheat trainer. Version v0.17.1", "name": "CheatRunner_v0.17.1.elf", "info": "CheatRunner_v0.17.1.elf - notmaj0r", "key": "cheatrunner"},
+    {"title": "ElfLdr", "description": "elf loader listening on 9021 port", "name": "elfldr-ps5.elf", "info": "elfldr-ps5.elf - ps5-payload-dev", "key": "elfldr"},
+    {"title": "ShSrv", "description": "shell server for netcat / telnet", "name": "shsrv-ps5.elf", "info": "shsrv-ps5.elf - ps5-payload-dev", "key": "shsrv"},
     {"title": "ftpsrv-drakmor", "description": "drakmor's fork of ftpsrv. Version 1.16-ng-stable", "name": "ftpsrv-drakmor_1.16-ng-stable.elf", "info": "ftpsrv-drakmor_1.16-ng-stable.elf - drakmor", "key": "ftpsrv-drakmor"},
     {"title": "garlic-savemgr", "description": "PS5 save decrypt/encrypt/browse utility with embedded web UI. Version v1.13.1", "name": "garlic-savemgr_v1.13.1.elf", "info": "garlic-savemgr_v1.13.1.elf - earthonion", "key": "garlic-savemgr"},
     {"title": "kstuff-lite", "description": "Lite version of kstuff. Version v1.11", "name": "kstuff-lite_v1.11.elf", "info": "kstuff-lite_v1.11.elf - EchoStretch", "key": "kstuff-lite"},
