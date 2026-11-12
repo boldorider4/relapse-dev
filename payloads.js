@@ -9,6 +9,8 @@ window.PAYLOAD_TILES = [
     {"title": "CheatRunner", "description": "Web-based game cheat trainer. Version v0.17.1", "name": "CheatRunner_v0.17.1.elf", "info": "CheatRunner_v0.17.1.elf - notmaj0r", "key": "cheatrunner"},
     {"title": "ElfLdr", "description": "elf loader listening on 9021 port", "name": "elfldr-ps5.elf", "info": "elfldr-ps5.elf - ps5-payload-dev", "key": "elfldr"},
     {"title": "ShSrv", "description": "shell server for netcat / telnet", "name": "shsrv-ps5.elf", "info": "shsrv-ps5.elf - ps5-payload-dev", "key": "shsrv"},
+    {"title": "PS5DumpForge", "description": "A toolkit for working with PS5 game dumps.", "name": "ps5-dump-forge-0.5.4-ps5.elf", "info": "ps5-dump-forge-0.5.4-ps5.elf - que3q", "key": "ps5dumpforge"},
+    {"title": "PS5EmuUpdater", "description": "PS5 payload that keeps APR Emu up to date on installed titles, from a web interface on the console.", "name": "apr_emu_updater.elf", "info": "apr_emu_updater.elf - tsuramatsu1", "key": "apr_emu_updater"},
     {"title": "ftpsrv-drakmor", "description": "drakmor's fork of ftpsrv. Version 1.16-ng-stable", "name": "ftpsrv-drakmor_1.16-ng-stable.elf", "info": "ftpsrv-drakmor_1.16-ng-stable.elf - drakmor", "key": "ftpsrv-drakmor"},
     {"title": "garlic-savemgr", "description": "PS5 save decrypt/encrypt/browse utility with embedded web UI. Version v1.13.1", "name": "garlic-savemgr_v1.13.1.elf", "info": "garlic-savemgr_v1.13.1.elf - earthonion", "key": "garlic-savemgr"},
     {"title": "kstuff-lite", "description": "Lite version of kstuff. Version v1.11", "name": "kstuff-lite_v1.11.elf", "info": "kstuff-lite_v1.11.elf - EchoStretch", "key": "kstuff-lite"},
@@ -16,8 +18,7 @@ window.PAYLOAD_TILES = [
     {"title": "PKG-Manager", "description": "Browse and install PKGs from USB, disc, or SMB shares directly on your PS5. Version v1.4.1", "name": "PKG-Manager_v1.4.1.elf", "info": "PKG-Manager_v1.4.1.elf - itsPLK", "key": "pkg-manager"},
     {"title": "pldmgr", "description": "Modern web dashboard to manage, import, and automatically load payloads on your PS5. Version v0.5.2", "name": "pldmgr_v0.5.2.elf", "info": "pldmgr_v0.5.2.elf - itsPLK", "key": "pldmgr"},
     {"title": "ps5-app-dumper", "description": "Dumps PS5 application files from pfsmnt to a connected USB storage device. Version v2.00", "name": "ps5-app-dumper_v2.00.elf", "info": "ps5-app-dumper_v2.00.elf - EchoStretch", "key": "ps5-app-dumper"},
-    {"title": "ShadowMountPlus1.7beta2", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta2", "name": "ShadowMountPlus_1.7beta2.elf", "info": "ShadowMountPlus_1.7beta2.elf - drakmor", "key": "shadowmountplus"},
-    {"title": "ShadowMountPlus1.7beta11", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta11", "name": "shadowmountplus.elf", "info": "ShadowMountPlus_1.7beta11.elf - drakmor", "key": "shadowmountplus-1.7beta11"},
+    {"title": "ShadowMountPlus1.7beta12", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta12", "name": "ShadowMountPlus_1.7beta12.elf", "info": "ShadowMountPlus_1.7beta12.elf - drakmor", "key": "shadowmountplus-1.7beta12"},
     {"title": "Orbit-Store", "description": "A modern, no-BS download manager for PS5. Version: 1.8.1 (Beta)", "name": "orbit_store.elf", "info": "orbit_store.elf - saawant12", "key": "orbit_store"}
 ];
 window.PAYLOAD_ART = { dir: "ui/", pfx: "btn-", on: true };
