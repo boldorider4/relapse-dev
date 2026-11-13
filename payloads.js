@@ -7,7 +7,7 @@ window.PAYLOAD_TILES = [
     {"title": "ps5debug-NG", "description": "PS5 debugger payload with a userland TCP wire-protocol server. Version 1.3.2", "name": "ps5debug-NG_1.3.2.elf", "info": "ps5debug-NG_1.3.2.elf - Pharaoh2k", "key": "ps5debug-ng"},
     {"title": "zftpd", "description": "Zero-copy FTP/HTTP server. Version v1.6.0", "name": "zftpd_v1.6.0.elf", "info": "zftpd_v1.6.0.elf - seregonwar", "key": "zftpd"},
     {"title": "CheatRunner", "description": "Web-based game cheat trainer. Version v0.17.1", "name": "CheatRunner_v0.17.1.elf", "info": "CheatRunner_v0.17.1.elf - notmaj0r", "key": "cheatrunner"},
-    {"title": "ElfLdr", "description": "elf loader listening on 9021 port", "name": "elfldr-ps5.elf", "info": "elfldr-ps5.elf - ps5-payload-dev", "key": "elfldr"},
+    {"title": "ElfLdr", "description": "elf loader listening on 9021 port", "name": "elfldr-ps5-1360.elf", "info": "elfldr-ps5-1360.elf - ps5-payload-dev", "key": "elfldr"},
     {"title": "ShSrv", "description": "shell server for netcat / telnet", "name": "shsrv-ps5.elf", "info": "shsrv-ps5.elf - ps5-payload-dev", "key": "shsrv"},
     {"title": "PS5DumpForge", "description": "A toolkit for working with PS5 game dumps.", "name": "ps5-dump-forge-0.5.4-ps5.elf", "info": "ps5-dump-forge-0.5.4-ps5.elf - que3q", "key": "ps5dumpforge"},
     {"title": "PS5EmuUpdater", "description": "PS5 payload that keeps APR Emu up to date on installed titles, from a web interface on the console.", "name": "apr_emu_updater.elf", "info": "apr_emu_updater.elf - tsuramatsu1", "key": "apr_emu_updater"},
