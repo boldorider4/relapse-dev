@@ -17,6 +17,5 @@ window.PAYLOAD_TILES = [
     {"title": "pldmgr", "description": "Modern web dashboard to manage, import, and automatically load payloads on your PS5. Version v0.6.3", "name": "pldmgr_v0.6.3.elf", "info": "pldmgr_v0.6.3.elf - itsPLK", "key": "pldmgr"},
     {"title": "ps5-app-dumper", "description": "Dumps PS5 application files from pfsmnt to a connected USB storage device. Version v2.00", "name": "ps5-app-dumper_v2.00.elf", "info": "ps5-app-dumper_v2.00.elf - EchoStretch", "key": "ps5-app-dumper"},
     {"title": "ShadowMountPlus1.7beta12", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta12", "name": "shadowmountplus-1.7beta12.elf", "info": "ShadowMountPlus_1.7beta12.elf - drakmor", "key": "shadowmountplus-1.7beta12"},
-    {"title": "Orbit-Store", "description": "A modern, no-BS download manager for PS5. Version: 1.8.1 (Beta)", "name": "orbit_store.elf", "info": "orbit_store.elf - saawant12", "key": "orbit_store"}
 ];
 window.PAYLOAD_ART = { dir: "ui/", pfx: "btn-", on: true };
